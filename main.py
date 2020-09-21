@@ -1,54 +1,6 @@
 from fractions import Fraction as frac
-
-def gauss_jordan_elim(A):
-    # First convert to row-echelon form
-    for row_count in range(len(A)):
-
-        col_count = row_count
-
-        # find the maximum value in the current column
-        curr_col = [abs(x[col_count]) for x in A[row_count:]]
-        max_num_col = max(curr_col)  # maximum value
-        max_num_col_pos = curr_col.index(max_num_col)  # the position of maximum value
-
-        # swap this row with the row where the maximum value exists
-        A[row_count], A[col_count + max_num_col_pos] = A[col_count + max_num_col_pos], A[row_count]
-
-        # reduce the pivot of this row to 1
-        if A[row_count][col_count] == 0:
-            continue
-        A[row_count] = [x / A[row_count][col_count] for x in A[row_count]]
-
-        # convert the below row of this column to 0
-        for row_count2 in range(row_count + 1, len(A)):
-            if A[row_count2][col_count] == 0:
-                continue
-
-            w1 = A[row_count2][col_count] / A[row_count][col_count]
-
-            for i in range(len(A[row_count2])):
-                A[row_count2][i] = A[row_count2][i] - w1 * A[row_count][i]
-
-    # Second convert to reduced row-echelon form
-    for row_count in range(len(A)):
-        col_count = row_count
-
-        if row_count == 0:
-            continue
-
-        for count, num in enumerate(A[row_count]):
-
-            if num == 1:
-                for recall_count in range(1, row_count + 1):
-                    if A[row_count - recall_count][count] != 0:
-
-                        w2 = A[row_count - recall_count][count] / A[row_count][count]
-                        for i in range(len(A[0])):
-                            A[row_count - recall_count][i] = A[row_count - recall_count][i] - w2 * A[row_count][i]
-
-                break
-
-    return A
+from Gauss_Jordan_Elimination import gauss_jordan_elim
+from Standard_Form import standard_form
 
 
 def inverse_matrix(A, transit_len):
@@ -127,33 +79,13 @@ def QR_decompose(m, transit_len, col_len):
     return Q, R
 
 
-def statndard_form(m):
-    absorb_state = []
-    transit_state = []
-    for index, row in enumerate(m):
-        if row.count(0) == len(m[0]):
-            absorb_state.append(index)
-        else:
-            transit_state.append(index)
-    final_state = transit_state + absorb_state
 
-    final = []
-    for i, index1 in enumerate(final_state):
-        final.append([])
-        for index2 in final_state:
-            final[i].append(m[index1][index2])
-        total = sum(m[index1])
-        if total != 0:
-            for w in range(len(final_state)):
-                final[i][w] = frac(final[i][w], total)
-
-    return final, len(transit_state)
 
 
 def solution(m):
     row_len, col_len = len(m), len(m[0])
 
-    m, transit_len = statndard_form(m)
+    m, transit_len = standard_form(m)
 
     Q, R = QR_decompose(m, transit_len, col_len)
 
