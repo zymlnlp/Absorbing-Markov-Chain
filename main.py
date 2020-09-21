@@ -79,9 +79,6 @@ def QR_decompose(m, transit_len, col_len):
     return Q, R
 
 
-
-
-
 def solution(m):
     row_len, col_len = len(m), len(m[0])
 
@@ -112,12 +109,20 @@ def solution(m):
 #     ]
 
 if __name__ == '__main__':
+
     with open("matrix_input.txt", "r") as f:
         input_matrix = [[int(num) for num in line.split(',')] for line in f]
 
+    print("Note: If you want to modify the input matrix, please refers to 'matrix_input.txt' file. \n")
     print("Input Matrix for Testing: ")
-    print(input_matrix, "\n")
-    print("Absorbing Markov Chain Solution: ")
-    print(solution(input_matrix), "\n")
+
+    for s in input_matrix:
+        print(*s)
+
+    print("\nAbsorbing Markov Chain Solution: ")
+    try:
+        print(solution(input_matrix), "\n")
+    except:
+        print("Error: Please check the input matrix.")
 
 
