@@ -164,7 +164,28 @@ def solution(m):
         S[i] = S[i] + I[i]
 
     K = inverse_matrix(S, transit_len)
-    print(K)
+    # print(K)
     prob = dot_product(K, R)[0]
     prob = common_denominator(prob)
     return prob
+
+
+# default_matrix = [
+#         [0, 1, 0, 0, 0, 1],
+#         [4, 0, 0, 3, 2, 0],
+#         [0, 0, 3, 0, 0, 0],
+#         [0, 0, 5, 7, 0, 0],
+#         [0, 0, 0, 0, 0, 0],
+#         [0, 0, 0, 0, 0, 0]
+#     ]
+
+if __name__ == '__main__':
+    with open("matrix_input.txt", "r") as f:
+        input_matrix = [[int(num) for num in line.split(',')] for line in f]
+
+    print("Input Matrix for Testing: ")
+    print(input_matrix, "\n")
+    print("Absorbing Markov Chain Solution: ")
+    print(solution(input_matrix), "\n")
+
+
